@@ -11,5 +11,5 @@ export type {
   BridgeEvent,
 } from './types'
 
-export { kMaxHistoryMessages } from './types'
+export { kMaxHistoryMessages, kChatBridgePath, kChatLivePath, chatBridgeSocketUrl } from './types'
 export { getMessageSegments } from './segments'

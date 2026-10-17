@@ -73,3 +73,31 @@ export type BridgeEvent =
   | BridgeSiteMessage
 
 export const kMaxHistoryMessages = 100
+
+/** Fixed route on the site. Not part of Yobachat config. */
+export const kChatBridgePath = '/api/chat/bridge'
+
+/** Browser socket for the theatre panel. Same origin as the page. */
+export const kChatLivePath = '/api/chat/live'
+
+/**
+ * Build the bridge WebSocket URL from a site origin.
+ * `http://127.0.0.1:3000` becomes `ws://127.0.0.1:3000/api/chat/bridge`.
+ * `https://example.com` becomes `wss://example.com/api/chat/bridge`.
+ */
+export function chatBridgeSocketUrl(origin: string): string {
+  const url = new URL(origin.trim())
+
+  if (url.protocol === 'http:') {
+    url.protocol = 'ws:'
+  } else if (url.protocol === 'https:') {
+    url.protocol = 'wss:'
+  } else if (url.protocol !== 'ws:' && url.protocol !== 'wss:') {
+    throw new Error('siteBridge.origin must be an http(s) origin')
+  }
+
+  url.pathname = kChatBridgePath
+  url.search = ''
+  url.hash = ''
+  return url.toString()
+}
