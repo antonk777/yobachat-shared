@@ -1,0 +1,43 @@
+.icon-twitch {
+  mask-image: url('./twitch.svg');
+}
+
+.icon-youtube {
+  mask-image: url('./youtube.svg');
+}
+
+.icon-telegram {
+  mask-image: url('./telegram.svg');
+}
+
+.icon-vkvideo {
+  mask-image: url('./vkvideo.svg');
+}
+
+.icon-kick {
+  mask-image: url('./kick.svg');
+}
+
+.icon-goodgame {
+  mask-image: url('./goodgame.png');
+}
+
+.icon-site {
+  mask-image: url('./site.svg');
+}
+
+.reply-icon {
+  mask-image: url('./arrow-reply-5.svg');
+}
+
+.moderator-badge {
+  mask-image: url('./all-seeing-eye.webp');
+}
+
+.vip-badge {
+  mask-image: url('./vip.svg');
+}
+
+.edited-badge {
+  mask-image: url('./edited.svg');
+}
