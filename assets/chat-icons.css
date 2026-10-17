@@ -26,7 +26,8 @@
   mask-image: url('./site.svg');
 }
 
-.reply-icon {
+.reply-icon,
+.reply-action {
   mask-image: url('./arrow-reply-5.svg');
 }
 
