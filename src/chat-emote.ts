@@ -25,7 +25,7 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
-const EMOTE_FILE_PATH = /^\/uploads\/chat-emotes\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(?:png|gif)$/i
+const EMOTE_FILE_PATH = /^\/uploads\/chat-emotes\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(?:png|gif|webp)$/i
 
 function isEmoteUrl(value: string): boolean {
   return isHttpUrl(value) || EMOTE_FILE_PATH.test(value)
@@ -82,7 +82,7 @@ export const EmoteAddSchema = z.object({
 export const StoredEmoteSchema = z.object({
   id: z.string().uuid(),
   name: z.string().regex(EMOTE_NAME),
-  ext: z.enum(['png', 'gif']),
+  ext: z.enum(['png', 'gif', 'webp']),
   status: z.enum(['pending', 'approved']),
   authorId: z.string().regex(AUTHOR_ID),
   authorName: z.string().max(200).transform(value => clean(value).slice(0, 100)).pipe(z.string().min(1)),
