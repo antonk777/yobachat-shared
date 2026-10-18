@@ -25,6 +25,12 @@ function isHttpUrl(value: string): boolean {
   }
 }
 
+const EMOTE_FILE_PATH = /^\/uploads\/chat-emotes\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(?:png|gif)$/i
+
+function isEmoteUrl(value: string): boolean {
+  return isHttpUrl(value) || EMOTE_FILE_PATH.test(value)
+}
+
 export const EmoteNameSchema = z.string()
   .max(80)
   .transform(clean)
@@ -47,7 +53,7 @@ export const SiteEmoteSchema = z.object({
 export const ApprovedEmoteSchema = z.object({
   name: z.string().regex(EMOTE_NAME),
   code: z.string().regex(/^:[A-Za-z0-9_]{2,20}:$/),
-  url: z.string().max(2048).refine(isHttpUrl),
+  url: z.string().max(2048).refine(isEmoteUrl),
 }).strip().refine(emote => emote.code === `:${emote.name}:`)
 
 export const EmoteReviewSchema = z.object({
