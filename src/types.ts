@@ -25,6 +25,8 @@ export interface ChatMessage {
   channel: string
   username: string
   message: string
+  /** Link encoded as a QR image under the message text. */
+  qrUrl?: string
   timestamp: number
   platform: Platform
   avatar?: string
@@ -65,12 +67,58 @@ export interface BridgeSiteMessage {
   message: ChatMessage
 }
 
+export interface SiteEmote {
+  id: string
+  name: string
+  code: string
+  url: string
+  status: 'pending' | 'approved'
+  authorName: string
+}
+
+export interface SiteEmoteFile {
+  name: string
+  dataBase64: string
+}
+
+export interface BridgeEmoteQueue {
+  type: 'emote-queue'
+  emotes: SiteEmote[]
+}
+
+export interface BridgeEmoteReview {
+  type: 'emote-review'
+  id: string
+  action: 'approve' | 'reject'
+}
+
+export interface BridgeEmoteAdd {
+  type: 'emote-add'
+  files: SiteEmoteFile[]
+}
+
+export interface BridgeEmoteRename {
+  type: 'emote-rename'
+  id: string
+  name: string
+}
+
+export interface BridgeEmoteDelete {
+  type: 'emote-delete'
+  id: string
+}
+
 export type BridgeEvent =
   | BridgeHello
   | BridgeMessages
   | BridgeDeleted
   | BridgeClear
   | BridgeSiteMessage
+  | BridgeEmoteQueue
+  | BridgeEmoteReview
+  | BridgeEmoteAdd
+  | BridgeEmoteRename
+  | BridgeEmoteDelete
 
 export const kMaxHistoryMessages = 100
 
