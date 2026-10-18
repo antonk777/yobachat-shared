@@ -19,7 +19,7 @@ export type {
 } from './types'
 
 export { kMaxHistoryMessages, kChatBridgePath, kChatLivePath, chatBridgeSocketUrl } from './types'
-export { getMessageSegments } from './segments'
+export { getMessageSegments, isEmoteOnlyMessage } from './segments'
 export { qrImageSrc } from './qr'
 export { prepareEmoteFile } from './resize-emote'
 export type { PrepareEmoteResult } from './resize-emote'

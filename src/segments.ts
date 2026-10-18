@@ -128,3 +128,21 @@ export function getMessageSegments(
 
   return segments
 }
+
+/** True when every non-emote segment is only whitespace, and there is at least one emote. */
+export function isEmoteOnlyMessage(segments: ChatMessageSegment[]): boolean {
+  let hasEmote = false
+
+  for (const segment of segments) {
+    if (segment.type === 'emote') {
+      hasEmote = true
+      continue
+    }
+
+    if (segment.content.trim() !== '') {
+      return false
+    }
+  }
+
+  return hasEmote
+}
