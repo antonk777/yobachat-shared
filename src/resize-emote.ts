@@ -1,31 +1,6 @@
+/// <reference path="./gifenc.d.ts" />
 import { parseGIF, decompressFrames, type ParsedFrame } from 'gifuct-js'
 import { GIFEncoder, applyPalette, quantize } from 'gifenc'
-
-declare module 'gifenc' {
-  interface GifEncoder {
-    writeFrame(index: Uint8Array, width: number, height: number, opts?: {
-      palette?: number[][]
-      delay?: number
-      transparent?: boolean
-      transparentIndex?: number
-      dispose?: number
-    }): void
-    finish(): void
-    bytes(): Uint8Array
-  }
-
-  export function GIFEncoder(): GifEncoder
-  export function quantize(
-    rgba: Uint8Array | Uint8ClampedArray,
-    maxColors: number,
-    opts?: { format?: string, oneBitAlpha?: boolean | number },
-  ): number[][]
-  export function applyPalette(
-    rgba: Uint8Array | Uint8ClampedArray,
-    palette: number[][],
-    format?: string,
-  ): Uint8Array
-}
 
 const MAX_SOURCE = 512
 const MAX_OUTPUT = 64
