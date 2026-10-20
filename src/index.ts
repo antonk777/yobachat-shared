@@ -8,6 +8,7 @@ export type {
   BridgeDeleted,
   BridgeClear,
   BridgeSiteMessage,
+  BridgeSiteAck,
   BridgeEvent,
   SiteEmote,
   SiteEmoteFile,
@@ -28,7 +29,9 @@ export {
   ChatMessageSchema,
   parseChatPost,
   parseChatMessage,
+  siteMessageId,
 } from './chat-message'
+export type { ChatPost } from './chat-message'
 export {
   EMOTE_NAME_ERROR,
   EmoteNameSchema,

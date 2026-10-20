@@ -53,6 +53,12 @@ function httpUrlMap(value: unknown, keyMax: number, maxEntries: number): Record<
 
 const textField = (max: number) => z.string().max(max * 4).transform(value => clip(value, max))
 
+const CLIENT_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+function epochMs(value: unknown): number | undefined {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value > 0 ? value : undefined
+}
+
 export const ChatPostSchema = z.object({
   text: z.string().max(500).transform(cleanChatText).pipe(z.string().min(1).max(500)),
   replyToId: z.unknown().optional().transform((value) => {
@@ -68,7 +74,23 @@ export const ChatPostSchema = z.object({
 
     return id
   }),
+  /** UUID picked by the browser; every retry of one post reuses it. */
+  clientId: z.unknown().optional().transform(value => (
+    typeof value === 'string' && CLIENT_ID.test(value) ? value.toLowerCase() : undefined
+  )),
+  /** Device clock when the post was typed. */
+  createdAt: z.unknown().optional().transform(epochMs),
+  /** Device clock when this attempt was sent. */
+  sentAt: z.unknown().optional().transform(epochMs),
 }).strip()
+
+export interface ChatPost {
+  text: string
+  replyToId?: string
+  clientId?: string
+  createdAt?: number
+  sentAt?: number
+}
 
 export const ChatMessageSchema = z.object({
   id: z.string().min(1).max(128).refine(id => !CONTROL_CHAR.test(id)),
@@ -124,7 +146,7 @@ export const ChatMessageSchema = z.object({
   }),
 }).strip()
 
-export function parseChatPost(input: unknown): { text: string, replyToId?: string } | null {
+export function parseChatPost(input: unknown): ChatPost | null {
   const result = ChatPostSchema.safeParse(input)
 
   if (!result.success) {
@@ -134,7 +156,15 @@ export function parseChatPost(input: unknown): { text: string, replyToId?: strin
   return {
     text: result.data.text,
     replyToId: result.data.replyToId,
+    clientId: result.data.clientId,
+    createdAt: result.data.createdAt,
+    sentAt: result.data.sentAt,
   }
+}
+
+/** The author's user id keeps one person's posts from ever sharing an id with another's. */
+export function siteMessageId(userId: string, clientId: string): string {
+  return `site:${userId}:${clientId}`
 }
 
 export function parseChatMessage(input: unknown): ChatMessage | null {

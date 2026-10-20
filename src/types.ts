@@ -46,6 +46,8 @@ export interface ChatMessage {
 export interface BridgeHello {
   type: 'hello'
   messages: ChatMessage[]
+  /** The sender answers every site-message with site-ack. */
+  siteAcks?: boolean
 }
 
 export interface BridgeMessages {
@@ -65,6 +67,15 @@ export interface BridgeClear {
 export interface BridgeSiteMessage {
   type: 'site-message'
   message: ChatMessage
+}
+
+/** The site stops resending every id listed here. */
+export interface BridgeSiteAck {
+  type: 'site-ack'
+  /** Accepted now or already known. */
+  ids: string[]
+  /** Refused as invalid. */
+  rejected?: string[]
 }
 
 export interface SiteEmote {
@@ -114,6 +125,7 @@ export type BridgeEvent =
   | BridgeDeleted
   | BridgeClear
   | BridgeSiteMessage
+  | BridgeSiteAck
   | BridgeEmoteQueue
   | BridgeEmoteReview
   | BridgeEmoteAdd
